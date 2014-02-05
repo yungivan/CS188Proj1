@@ -89,8 +89,8 @@ def GeneralSearch(problem, fringe):
             return []
         state, path = fringe.pop()
         if problem.isGoalState(state):
-            print "found path~~~~~~"
-            print path
+            #print "found path~~~~~~"
+            #print path
             return path
         if state not in closed:
             closed.add(state)
@@ -104,15 +104,17 @@ def GeneralSearch(problem, fringe):
 def GeneralSearchWithCost(problem, fringe):
     closed = set()
     #fringe = util.Stack()
-    tup = (problem.getStartState(), [])
-    fringe.push(tup, 99999)
+    tup = (problem.getStartState(), [], 1)
+    fringe.push(tup, 1)
     while True:
         if fringe.isEmpty():
             return []
-        node, test = fringe.pop()
-        print "~~~~~: %s ~~~ %s~~~" % node, test
-        state, path = node
-        
+        node = fringe.pop()
+
+        state, path, parentcost = node
+        #print "~~~~~~~~~~~"
+        #print path
+        #print "~~~~~~~"
         if problem.isGoalState(state):
             #print "found path~~~~~~"
             #print path
@@ -120,11 +122,13 @@ def GeneralSearchWithCost(problem, fringe):
         if state not in closed:
             closed.add(state)
             for child in problem.getSuccessors(state):
+                aggcost = parentcost
                 pathalter = list(path)
                 next_state, direction, cost = child
                 pathalter.append(direction)
-                tup = (next_state, pathalter)
-                fringe.push(tup, cost)
+                tup = (next_state, pathalter, aggcost+cost)
+                #print next_state, cost
+                fringe.push(tup, aggcost+cost)
 
 def depthFirstSearch(problem):
     """
