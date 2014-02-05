@@ -89,8 +89,6 @@ def GeneralSearch(problem, fringe):
             return []
         state, path = fringe.pop()
         if problem.isGoalState(state):
-            #print "found path~~~~~~"
-            #print path
             return path
         if state not in closed:
             closed.add(state)
@@ -101,7 +99,7 @@ def GeneralSearch(problem, fringe):
                 tup = (next_state, pathalter)
                 fringe.push(tup)
 
-def GeneralSearchWithCost(problem, fringe):
+def GeneralSearchWithCost(problem, fringe, heuristic):
     closed = set()
     #fringe = util.Stack()
     tup = (problem.getStartState(), [], 1)
@@ -128,7 +126,7 @@ def GeneralSearchWithCost(problem, fringe):
                 pathalter.append(direction)
                 tup = (next_state, pathalter, aggcost+cost)
                 #print next_state, cost
-                fringe.push(tup, aggcost+cost)
+                fringe.push(tup, aggcost+cost+heuristic(next_state, problem))
 
 def depthFirstSearch(problem):
     """
@@ -162,7 +160,7 @@ def uniformCostSearch(problem):
     "Search the node of least total cost first. "
     "*** YOUR CODE HERE ***"
     #util.raiseNotDefined()
-    return GeneralSearchWithCost(problem, util.PriorityQueue())
+    return GeneralSearchWithCost(problem, util.PriorityQueue(), nullHeuristic)
 
 
 def nullHeuristic(state, problem=None):
@@ -175,8 +173,7 @@ def nullHeuristic(state, problem=None):
 def aStarSearch(problem, heuristic=nullHeuristic):
     "Search the node that has the lowest combined cost and heuristic first."
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
-
+    return GeneralSearchWithCost(problem, util.PriorityQueue(), heuristic)
 
 # Abbreviations
 bfs = breadthFirstSearch
