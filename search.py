@@ -81,7 +81,6 @@ def tinyMazeSearch(problem):
 
 def GeneralSearch(problem, fringe):
     closed = set()
-    #fringe = util.Stack()
     tup = (problem.getStartState(), [])
     fringe.push(tup)
     while True:
@@ -89,6 +88,7 @@ def GeneralSearch(problem, fringe):
             return []
         state, path = fringe.pop()
         if problem.isGoalState(state):
+            #print path
             return path
         if state not in closed:
             closed.add(state)
@@ -101,20 +101,14 @@ def GeneralSearch(problem, fringe):
 
 def GeneralSearchWithCost(problem, fringe, heuristic):
     closed = set()
-    #fringe = util.Stack()
     tup = (problem.getStartState(), [], 1)
     fringe.push(tup, 1)
     while True:
         if fringe.isEmpty():
             return []
         node = fringe.pop()
-
         state, path, parentcost = node
-        #print "~~~~~~~~~~~"
-        #print path
-        #print "~~~~~~~"
         if problem.isGoalState(state):
-            #print "found path~~~~~~"
             #print path
             return path
         if state not in closed:
@@ -125,7 +119,6 @@ def GeneralSearchWithCost(problem, fringe, heuristic):
                 next_state, direction, cost = child
                 pathalter.append(direction)
                 tup = (next_state, pathalter, aggcost+cost)
-                #print next_state, cost
                 fringe.push(tup, aggcost+cost+heuristic(next_state, problem))
 
 def depthFirstSearch(problem):

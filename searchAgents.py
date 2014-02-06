@@ -285,17 +285,37 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
         "*** YOUR CODE HERE ***"
+        self.bool1, self.bool2, self.bool3, self.bool4 = False, False, False, False
+        
 
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #util.raiseNotDefined()
+        #print self.startingPosition
+        return (self.startingPosition, self.bool1, self.bool2, self.bool3, self.bool4)
 
     def isGoalState(self, state):
         "Returns whether this search state is a goal state of the problem"
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        #util.raiseNotDefined()
+        #print state[0]
+        #print state[1]
+        if state[1]==True and state[2]==True and state[3]==True and state[4]==True:
+            return True
+        return False
 
+        """if state in self.checkpoint: 
+            print "~~~~~"
+            print state
+            #print self.corners.type
+            print "~~~~"
+            self.checkpoint.remove(state)
+        if not self.checkpoint:
+            print "list is empty"
+            return True
+        return False
+        """
     def getSuccessors(self, state):
         """
         Returns successor states, the actions they require, and a cost of 1.
@@ -318,10 +338,48 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
-
+            coord,bool1,bool2,bool3,bool4 = state
+            x,y = coord
+            #print x,y
+            #print "~~~~"
+            #print bool1, bool2, bool3, bool4
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            if not self.walls[nextx][nexty]:
+                if (nextx,nexty) ==self.corners[0]:
+                    bool1 = True
+                if (nextx,nexty) ==self.corners[1]:
+                    bool2 = True
+                if (nextx,nexty) ==self.corners[2]:
+                    bool3 = True
+                if (nextx,nexty) ==self.corners[3]:
+                    bool4 = True
+                nextState=((nextx, nexty), bool1, bool2, bool3, bool4)
+                cost = 1
+                successors.append( (nextState, action, cost))
         self._expanded += 1 # DO NOT CHANGE
         return successors
 
+        """
+
+        successors = []
+        for action in [Directions.NORTH, Directions.SOUTH, Directions.EAST, Directions.WEST]:
+            x,y = state
+            dx, dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy)
+            if not self.walls[nextx][nexty]:
+                nextState = (nextx, nexty)
+                cost = self.costFn(nextState)
+                successors.append( ( nextState, action, cost) )
+
+        # Bookkeeping for display purposes
+        self._expanded += 1 # DO NOT CHANGE
+        if state not in self._visited:
+            self._visited[state] = True
+            self._visitedlist.append(state)
+
+        return successors
+        """
     def getCostOfActions(self, actions):
         """
         Returns the cost of a particular sequence of actions.  If those actions
