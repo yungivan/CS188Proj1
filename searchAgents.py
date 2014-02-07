@@ -286,7 +286,8 @@ class CornersProblem(search.SearchProblem):
         # in initializing the problem
         "*** YOUR CODE HERE ***"
         self.bool1, self.bool2, self.bool3, self.bool4 = False, False, False, False
-        
+        self.startingGameState = startingGameState
+
 
     def getStartState(self):
         "Returns the start state (in your state space, not the full Pacman state space)"
@@ -411,7 +412,25 @@ def cornersHeuristic(state, problem):
     walls = problem.walls # These are the walls of the maze, as a Grid (game.py)
 
     "*** YOUR CODE HERE ***"
-    return 0 # Default to trivial solution
+    if problem.isGoalState(state):
+        return 0
+
+    corner1 = corners[0]
+    corner2 = corners[1]
+    corner3 = corners[2]
+    corner4 = corners[3]
+    #print corner1, corner2, corner3, corner4
+    position,b1,b2,b3,b4=state 
+    #print "~~~~~"
+    #print coord,
+    #return mazeDistance(position, corner1, problem.startingGameState)
+    dto1 = mazeDistance(position, corner1, problem.startingGameState)
+    dto2 = mazeDistance(position, corner2,problem.startingGameState)
+    dto3 = mazeDistance(position, corner3,problem.startingGameState)
+    dto4 = mazeDistance(position,corner4,problem.startingGameState)
+    return min(dto1, dto2, dto3, dto4) 
+
+    #return 0 # Default to trivial solution
 
 class AStarCornersAgent(SearchAgent):
     "A SearchAgent for FoodSearchProblem using A* and your foodHeuristic"
@@ -504,12 +523,20 @@ def foodHeuristic(state, problem):
     "*** YOUR CODE HERE ***"
     #return mazeDistance(position, )
     #return 0
+    
+    if problem.isGoalState(state):
+        return 0
+    else:
+        return 1
+
+    """
     corner1 = self.corners[0]
     corner2 = self.corners[1]
     corner3 = self.corners[2]
     corner4 = self.corners[3]
     print corner1, corner2, corner3, corner4
     return min(mazeDistance(position, corner1), mazeDistance(position, corner2), mazeDistance(position, corner3), mazeDistance(position,corner4))
+    """
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
