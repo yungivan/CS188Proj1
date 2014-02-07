@@ -415,20 +415,60 @@ def cornersHeuristic(state, problem):
     if problem.isGoalState(state):
         return 0
 
+
+    
     corner1 = corners[0]
     corner2 = corners[1]
     corner3 = corners[2]
     corner4 = corners[3]
-    #print corner1, corner2, corner3, corner4
-    position,b1,b2,b3,b4=state 
-    #print "~~~~~"
-    #print coord,
-    #return mazeDistance(position, corner1, problem.startingGameState)
+    position,v1,v2,v3,v4=state 
+    
+    bools = [v1,v2,v3,v4]
     dto1 = mazeDistance(position, corner1, problem.startingGameState)
-    dto2 = mazeDistance(position, corner2,problem.startingGameState)
-    dto3 = mazeDistance(position, corner3,problem.startingGameState)
-    dto4 = mazeDistance(position,corner4,problem.startingGameState)
-    return min(dto1, dto2, dto3, dto4) 
+    dto2 = mazeDistance(position, corner2, problem.startingGameState)
+    dto3 = mazeDistance(position, corner3, problem.startingGameState)
+    dto4 = mazeDistance(position, corner4, problem.startingGameState)
+    count = 4
+    #print dto1, dto2, dto3, dto4
+    distance = [dto1, dto2, dto3, dto4]
+    total = 0 
+    
+    """
+    for i in distance:
+        #print "length: %s" % len(distance)
+        if bools[i]:
+            bools.remove(bools[i])
+            distance.remove(distance[i])
+        print "bool: %s" % bools
+        print "distance: %s" % distance
+        print "i: %s" % i
+    for i in range(0, len(distance)):
+        total += distance[i]
+        
+    return total/len(distance)
+    """
+    for i in range(0,4): 
+        if bools[i]: 
+            distance[i] = 0
+            count -= 1
+    """
+    if v2: 
+        dto2 = 0
+        count -=1
+    if v3:
+        dto3 = 0
+        count -=1
+    if v4: 
+        dto4 = 0
+        count -=1
+    #if count == 0:
+     #   return 0
+    """
+    return sum(distance)/count
+    
+    
+    
+
 
     #return 0 # Default to trivial solution
 
@@ -526,9 +566,14 @@ def foodHeuristic(state, problem):
     
     if problem.isGoalState(state):
         return 0
-    else:
-        return 1
+    
 
+
+    dto1 = mazeDistance(position, corner1, problem.startingGameState)
+    dto2 = mazeDistance(position, corner2,problem.startingGameState)
+    dto3 = mazeDistance(position, corner3,problem.startingGameState)
+    dto4 = mazeDistance(position,corner4,problem.startingGameState)
+    return min(dto1, dto2, dto3, dto4) 
     """
     corner1 = self.corners[0]
     corner2 = self.corners[1]
