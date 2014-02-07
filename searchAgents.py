@@ -530,57 +530,39 @@ def foodHeuristic(state, problem):
     #return mazeDistance(position, )
     #return 0 
     foodlist = foodGrid.asList()
-    #print "foodGridaslist: %s" %foodlist
-    #print "foodGrid: %s" %foodGrid
     if problem.isGoalState(state):
         return 0
     count = 0
     total = 0
+    maxnum = 0
     for foodpos in foodlist:
-        #print "~~~"
-        #print foodpos
-        #x, y = foodlist[i]
-        
-
         key = str((position, foodpos))
-        if key in problem.heuristicInfo: 
-            total+= problem.heuristicInfo[key] 
-            count+=1
-        else:
-            pos = mazeDistance(position, foodpos, problem.startingGameState)
-            problem.heuristicInfo[key] = pos
-            total += pos
-            count += 1
-    #print total/count
+        if key not in problem.heuristicInfo: 
+            problem.heuristicInfo[key] = mazeDistance(position, foodpos, problem.startingGameState)
+        pos = problem.heuristicInfo[key]
+        if maxnum < pos:
+            maxnum = pos
+        #count += 1
+    #return total/count
+    return maxnum
+
+    """
+    foodlist = foodGrid.asList()
+    if problem.isGoalState(state):
+        return 0
+    count = 0
+    total = 0
+    max = 99999999
+    for foodpos in foodlist:
+        key = str((position, foodpos))
+        if key not in problem.heuristicInfo: 
+            problem.heuristicInfo[key] = mazeDistance(position, foodpos, problem.startingGameState)
+        pos = problem.heuristicInfo[key]
+        total += pos   
+        count += 1
     return total/count
     """
-    for x in range(0, len(foodGrid)):
-        print x
-        for y in range(0, len(foodGrid[x])):
-            if foodlist[x][y]:
-                foodlist[x][y]
-    """
-
-    """
-    position,v1,v2,v3,v4=state 
     
-    bools = [v1,v2,v3,v4]
-
-    dto1 = mazeDistance(position, corner1, problem.startingGameState)
-    dto2 = mazeDistance(position, corner2, problem.startingGameState)
-    dto3 = mazeDistance(position, corner3, problem.startingGameState)
-    dto4 = mazeDistance(position, corner4, problem.startingGameState)
-    count = 4
-    #print dto1, dto2, dto3, dto4
-    distance = [dto1, dto2, dto3, dto4]
-    total = 0 
-    
-    for i in range(0,4): 
-        if bools[i]: 
-            distance[i] = 0
-            count -= 1
-    return sum(distance)/count
-    """
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
     def registerInitialState(self, state):
