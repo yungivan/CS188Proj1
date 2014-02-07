@@ -502,7 +502,14 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
-    return 0
+    #return mazeDistance(position, )
+    #return 0
+    corner1 = self.corners[0]
+    corner2 = self.corners[1]
+    corner3 = self.corners[2]
+    corner4 = self.corners[3]
+    print corner1, corner2, corner3, corner4
+    return min(mazeDistance(position, corner1), mazeDistance(position, corner2), mazeDistance(position, corner3), mazeDistance(position,corner4))
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
